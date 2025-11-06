@@ -7,24 +7,23 @@ from pygame.sprite import Sprite
 
 from time import time
 
-from .class_Screen import Screen
+from .class_Screen import win
 from .all_sprites import all_sprites
 from .class_PlayerShoots import PlayerShoots
 
-scr = Screen()
+
 
 class Player(Sprite):
     def __init__(self):
         Sprite.__init__(self)
-        # self.image = Surface((50, 50))
-        # self.image.fill('MidnightBlue')
-        self.image = scale_by(load('images/su-33.png'), .2)
+        self.image = scale_by(load('images/su-33.png').convert_alpha(), .2)
         self.rect = self.image.get_rect(center=(
-            scr.screen.get_width() // 2, scr.screen.get_height() // 2
+            win.screen.get_width() // 2, win.screen.get_height() // 2
         ))
         self.speed = 10
         self.permission_shot = .5
         self.shot_time = 1
+        self._layer = 2
         all_sprites.add(self)
 
     def move(self):
@@ -45,21 +44,21 @@ class Player(Sprite):
             if not self.shot_time:
                 self.shot_time = time()
             if time() - self.shot_time >= self.permission_shot:
-                shoot = PlayerShoots(self.rect.center, 15)
+                shoot = PlayerShoots(pos=(self.rect.centerx - 46, self.rect.centery + 10), speed=15)
                 all_sprites.add(shoot)
                 self.shot_time = time()
 
     def check_position(self):
         if self.rect.left <= 0:
             self.rect.left = 0
-        if self.rect.right >= scr.screen.get_width():
-            self.rect.right = scr.screen.get_width()
+        if self.rect.right >= win.screen.get_width():
+            self.rect.right = win.screen.get_width()
         if self.rect.top <= 0:
             self.rect.top = 0
-        if self.rect.bottom >= scr.screen.get_height():
-            self.rect.bottom = scr.screen.get_height()
+        if self.rect.bottom >= win.screen.get_height():
+            self.rect.bottom = win.screen.get_height()
 
     def update(self):
         self.move()
         self.check_position()
-        scr.screen.blit(self.image, self.rect)
+        win.screen.blit(self.image, self.rect)
