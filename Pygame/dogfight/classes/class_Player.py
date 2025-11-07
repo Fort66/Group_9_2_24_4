@@ -3,15 +3,18 @@ from pygame.locals import K_UP, K_DOWN, K_LEFT, K_RIGHT, K_w, K_s, K_a, K_d, K_c
 from pygame.key import get_pressed
 from pygame.image import load
 from pygame.transform import scale_by
-from pygame.sprite import Sprite
+from pygame.sprite import Sprite, Group, groupcollide
 
 from time import time
 
 from .class_Screen import win
 from .all_sprites import all_sprites
 from .class_PlayerShoots import PlayerShoots
+from .class_Enemies import enemies_group
 
 
+player_group = Group()
+player_shots_group = Group()
 
 class Player(Sprite):
     def __init__(self):
@@ -24,6 +27,7 @@ class Player(Sprite):
         self.permission_shot = .5
         self.shot_time = 1
         self._layer = 2
+        player_group.add(self)
         all_sprites.add(self)
 
     def move(self):
@@ -45,6 +49,7 @@ class Player(Sprite):
                 self.shot_time = time()
             if time() - self.shot_time >= self.permission_shot:
                 shoot = PlayerShoots(pos=(self.rect.centerx - 46, self.rect.centery + 10), speed=15)
+                player_shots_group.add(shoot)
                 all_sprites.add(shoot)
                 self.shot_time = time()
 
@@ -58,7 +63,11 @@ class Player(Sprite):
         if self.rect.bottom >= win.screen.get_height():
             self.rect.bottom = win.screen.get_height()
 
+    def collision(self):
+        rocket_collide = groupcollide(enemies_group, player_shots_group, True, True)
+
     def update(self):
         self.move()
         self.check_position()
+        self.collision()
         win.screen.blit(self.image, self.rect)

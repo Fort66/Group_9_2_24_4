@@ -32,7 +32,7 @@ class Clouds(Sprite):
                 self.scale_value = .8
         self.image = scale_by(load(choice(clouds_list)).convert_alpha(), self.scale_value)
         self.check_position()
-        self.speed = randint(1, 3)
+        self.speed = randint(1, 2)
         all_sprites.add(self)
 
     def move(self):

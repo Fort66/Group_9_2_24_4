@@ -1,5 +1,5 @@
 from pygame import Surface
-from pygame.sprite import Sprite
+from pygame.sprite import Sprite, Group
 from pygame.image import load
 from pygame.transform import scale_by
 
@@ -10,7 +10,7 @@ from random import uniform, randint
 
 from .all_sprites import all_sprites
 
-
+enemies_group = Group()
 
 class Enemies(Sprite):
     def __init__(self):
@@ -19,12 +19,14 @@ class Enemies(Sprite):
         self.check_position()
         self.speed = randint(5, 10)
         self._layer = 2
+        enemies_group.add(self)
         all_sprites.add(self)
 
     def move(self):
         if self.rect.left > -100:
             self.rect.move_ip(-self.speed, 0)
         else:
+            enemies_group.remove(self)
             self.check_position()
 
     def check_position(self):
