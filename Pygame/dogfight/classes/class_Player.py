@@ -8,9 +8,10 @@ from pygame.sprite import Sprite, Group, groupcollide
 from time import time
 
 from .class_Screen import win
-from .all_sprites import all_sprites
+from .class_AllSprites import all_sprites
 from .class_PlayerShoots import PlayerShoots
 from .class_Enemies import enemies_group
+from .class_Explosion import Explosion
 
 
 player_group = Group()
@@ -23,7 +24,7 @@ class Player(Sprite):
         self.rect = self.image.get_rect(center=(
             win.screen.get_width() // 2, win.screen.get_height() // 2
         ))
-        self.speed = 10
+        self.speed = 8
         self.permission_shot = .5
         self.shot_time = 1
         self._layer = 2
@@ -64,7 +65,11 @@ class Player(Sprite):
             self.rect.bottom = win.screen.get_height()
 
     def collision(self):
-        rocket_collide = groupcollide(enemies_group, player_shots_group, True, True)
+        rocket_collide = groupcollide(player_shots_group, enemies_group, True, True)
+        if rocket_collide:
+            hits = list(rocket_collide.keys())[0]
+            self.explosion_rocket = Explosion(hits.rect.center, 1)
+            self.explosion_rocket.speed = hits.speed * -1
 
     def update(self):
         self.move()

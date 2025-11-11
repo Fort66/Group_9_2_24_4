@@ -8,7 +8,7 @@ from .class_Screen import win
 
 from random import uniform, randint, choice
 
-from .all_sprites import all_sprites
+from .class_AllSprites import all_sprites
 
 
 clouds_list = [

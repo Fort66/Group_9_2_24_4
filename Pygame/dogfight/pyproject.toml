@@ -1,0 +1,12 @@
+[project]
+name = "dogfight"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "gif-pygame>=1.2.0",
+    "icecream>=2.1.8",
+    "packaging>=25.0",
+    "pygame>=2.6.1",
+]

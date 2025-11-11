@@ -8,7 +8,7 @@ from .class_Player import Player
 from .class_Enemies import Enemies, enemies_group
 from .class_Clouds import Clouds
 
-from .all_sprites import all_sprites
+from .class_AllSprites import all_sprites
 
 
 player = Player()
@@ -23,8 +23,8 @@ class Game:
         self.setup()
 
     def setup(self):
-        if len(enemies_group) < 15:
-            enemies = [Enemies() for _ in range(15 - len(enemies_group))]
+        if len(enemies_group) < 10:
+            enemies = [Enemies() for _ in range(10 - len(enemies_group))]
 
     def run(self):
         while self.loop:
