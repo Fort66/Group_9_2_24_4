@@ -1,27 +1,17 @@
-from pygame import Surface
 from pygame.sprite import Sprite
 from pygame.image import load
 from pygame.transform import scale_by
 
+from random import uniform, randint
 
-from .class_Screen import win
-
-from random import uniform, randint, choice
-
-from .class_AllSprites import all_sprites
-
-
-clouds_list = [
-    'images/cloud2.png',
-    'images/cloud3.png',
-    'images/cloud4.png',
-    'images/cloud5.png'
-]
+from ..screens.class_Screen import win
+from ..groups.class_AllSprites import all_sprites
 
 
 class Clouds(Sprite):
-    def __init__(self):
+    def __init__(self, path):
         Sprite.__init__(self)
+
         self._layer = randint(1, 3)
         match self._layer:
             case 1:
@@ -30,7 +20,8 @@ class Clouds(Sprite):
                 self.scale_value = .6
             case 3:
                 self.scale_value = .8
-        self.image = scale_by(load(choice(clouds_list)).convert_alpha(), self.scale_value)
+
+        self.image = scale_by(load(path).convert_alpha(), self.scale_value)
         self.check_position()
         self.speed = randint(1, 2)
         all_sprites.add(self)

@@ -4,7 +4,7 @@ from pygame.image import load
 from pygame.transform import scale_by, flip
 
 
-from .class_Screen import win
+from ..screens.class_Screen import win
 
 
 

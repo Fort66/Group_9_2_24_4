@@ -2,8 +2,8 @@ import gif_pygame as gif
 
 from pygame.sprite import Sprite
 
-from .class_AllSprites import all_sprites
-from .class_Screen import win
+from ..groups.class_AllSprites import all_sprites
+from ..screens.class_Screen import win
 
 
 class Explosion(Sprite):
@@ -15,7 +15,7 @@ class Explosion(Sprite):
         self.speed = None
 
         if types == 1:
-            self.image = gif.load('images/rocket_explosion.gif', loops=0)
+            self.image = gif.load('images/explosions/rocket_explosion.gif', loops=0)
             self.image =gif.transform.scale_by(self.image, .5, new_gif=True)
 
         self.rect = self.image.get_rect(center=self.pos)
