@@ -105,7 +105,7 @@ class Player(Sprite):
                     self.cobra_cnt = count(0, 3)
 
     def prepare_weapons(self):
-        weapons.load_weapons(obj=self, source=[-46, 10], angle=self.angle)
+        weapons.load_weapons(obj=self, source=[[-46, 10]], angle=self.angle)
 
     def pos_weapons_rotation(self):
         return weapons.pos_rotation(self, self.angle)
