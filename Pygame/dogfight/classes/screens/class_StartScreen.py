@@ -16,7 +16,7 @@ class StartScreen:
         return cls.__instance
 
     def __init__(self):
-        self.image = scale(load('images/screens/start.jpg'), win.screen.get_size())
+        self.image = scale(load('images/screens/start.jpg'), win.size)
         self.rect = self.image.get_rect()
 
         self.btn = ButtonText(

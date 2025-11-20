@@ -28,15 +28,16 @@ class Player(Sprite):
             win.screen.get_width() // 2, win.screen.get_height() // 2
         ))
         self.direction = Vector2(self.rect.center)
-        self.speed = 8
+        self.speed = 5
         self.permission_shot = .5
         self.shot_time = 1
-        self.is_cobra = False
+        self.is_cobra = 0
         self.cobra_time = 1
-        self.permission_cobra = .01
+        self.permission_cobra = .5
         self.cobra_cnt = count(0, 3)
         self.cnt = 0
         self.angle = 0
+        self.cobra_angle = 0
         self._layer = 2
         self.prepare_weapons()
         groups.player_group.add(self)
@@ -47,17 +48,11 @@ class Player(Sprite):
         if True in keys:
             if keys[K_UP] or keys[K_w]:
                 self.rect.move_ip(0, -self.speed)
-                self.image_rotation = self.image.copy()
-                self.angle = 15
-                self.image_rotation = rotozoom(self.image_rotation, self.angle, 1)
-                self.rect = self.image_rotation.get_rect(center=self.rect.center)
+                self.rotation(15)
 
             if keys[K_DOWN] or keys[K_s]:
                 self.rect.move_ip(0, self.speed)
-                self.image_rotation = self.image.copy()
-                self.angle = -15
-                self.image_rotation = rotozoom(self.image_rotation, self.angle, 1)
-                self.rect = self.image_rotation.get_rect(center=self.rect.center)
+                self.rotation(-15)
 
             if keys[K_LEFT] or keys[K_a]:
                 self.rect.move_ip(-self.speed, 0)
@@ -77,32 +72,42 @@ class Player(Sprite):
                         self.shot_time = time()
 
             if keys[K_k]:
-                self.is_cobra = True
-                if not self.cobra_time:
-                    self.cobra_time = time()
+                if not self.is_cobra:
+                    self.is_cobra = 1
+                    next(self.cobra_cnt)
 
-                if self.cnt < 117:
-                    self.cnt = next(self.cobra_cnt)
-                    self.angle = self.cnt
-                    self.cobra()
-                else:
-                    self.cobra_cnt = count(self.cnt, -3)
         else:
             if not self.is_cobra:
-                self.angle = 0
-                self.image_rotation = self.image.copy()
-                self.image_rotation = rotozoom(self.image_rotation, 0, 1)
-                self.rect = self.image_rotation.get_rect(center=self.rect.center)
+                self.rotation(0)
+
             else:
                 if not self.cobra_time:
                     self.cobra_time = time()
-                if self.cnt > 0:
+
+                if self.cobra_angle < 117 and self.is_cobra == 1:
                     self.cnt = next(self.cobra_cnt)
-                    self.angle = self.cnt
-                    self.cobra()
-                else:
-                    self.is_cobra = False
+                    self.cobra_angle = self.cnt
+                    angle = self.cnt
+
+                    if self.cobra_angle >= 117:
+                        self.cobra_cnt = count(self.cnt, -3)
+                        self.is_cobra = -1
+
+                if self.cobra_angle >= 117 and self.is_cobra == -1:
+                    self.cnt = next(self.cobra_cnt)
+                    angle = self.cnt
+
+                if self.cnt <= 0:
+                    self.cobra_angle = 0
                     self.cobra_cnt = count(0, 3)
+                    self.is_cobra = 0
+                self.rotation(angle)
+                self.cobra_time = time()
+
+    def rotation(self, angle):
+        self.image_rotation = self.image.copy()
+        self.image_rotation = rotozoom(self.image_rotation, angle, 1)
+        self.rect = self.image_rotation.get_rect(center=self.rect.center)
 
     def prepare_weapons(self):
         weapons.load_weapons(obj=self, source=[[-46, 10]], angle=self.angle)

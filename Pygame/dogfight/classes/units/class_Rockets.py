@@ -6,41 +6,39 @@ from random import uniform, randint
 
 from ..screens.class_Screen import win
 from ..groups.class_AllSprites import all_sprites
+from ..groups.class_SpritesGroups import groups
 
 
-class Clouds(Sprite):
-    def __init__(self, path):
+class Rockets(Sprite):
+    def __init__(self):
         Sprite.__init__(self)
-
-        self._layer = randint(1, 3)
-        match self._layer:
-            case 1:
-                self.scale_value = .4
-            case 2:
-                self.scale_value = .6
-            case 3:
-                self.scale_value = .8
-
-        self.image = scale_by(load(path).convert_alpha(), self.scale_value)
+        self.image = scale_by(load('images/rocket.gif').convert_alpha(), .3)
         self.check_position()
-        self.speed = randint(1, 2)
+        self.speed = randint(3, 8)
+        self._layer = 2
+        groups.enemies_shots_group.add(self)
         all_sprites.add(self)
 
     def move(self):
-        if self.rect.left > -2000:
+        if self.rect.left > -300:
             self.rect.move_ip(-self.speed, 0)
         else:
+            # enemies_group.remove(self)
+            if self in groups.enemies_shots_group:
+                self.kill()
+            # if self in all_sprites:
+                # all_sprites.remove(self)
             self.check_position()
 
     def check_position(self):
         self.rect = self.image.get_rect(center=(
             uniform(
-                win.size[0] + 1000,
-                win.size[0] + 5000
+                win.screen.get_width() + 300,
+                win.screen.get_width() + 1000
                 ),
             uniform(
                 0,
-                win.size[1]
+                win.screen.get_height()
             )
         ))
 

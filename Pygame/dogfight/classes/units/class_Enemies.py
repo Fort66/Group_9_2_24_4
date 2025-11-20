@@ -10,35 +10,36 @@ from ..groups.class_SpritesGroups import groups
 
 
 class Enemies(Sprite):
-    def __init__(self):
+    def __init__(self, path):
         Sprite.__init__(self)
-        self.image = scale_by(load('images/rocket.gif').convert_alpha(), .3)
-        self.check_position()
-        self.speed = randint(3, 8)
+        self.image = scale_by(load(path[0]).convert_alpha(), path[1])
+        self.gen_pos()
+        self.speed = randint(3, 5)
         self._layer = 2
         groups.enemies_group.add(self)
         all_sprites.add(self)
 
     def move(self):
-        if self.rect.left > -300:
-            self.rect.move_ip(-self.speed, 0)
-        else:
-            # enemies_group.remove(self)
-            if self in groups.enemies_group:
-                self.kill()
-            # if self in all_sprites:
-                # all_sprites.remove(self)
-            self.check_position()
+        self.rect.move_ip(-self.speed, 0)
 
-    def check_position(self):
+        if self.rect.left <= -1000:
+            self.gen_pos()
+        # else:
+        #     # enemies_group.remove(self)
+        #     if self in groups.enemies_group:
+        #         self.kill()
+        #     # if self in all_sprites:
+        #         # all_sprites.remove(self)
+
+    def gen_pos(self):
         self.rect = self.image.get_rect(center=(
             uniform(
-                win.screen.get_width() + 300,
-                win.screen.get_width() + 1000
+                win.size[0] + 1000,
+                win.size[0] + 5000
                 ),
             uniform(
                 0,
-                win.screen.get_height()
+                win.size[1]
             )
         ))
 

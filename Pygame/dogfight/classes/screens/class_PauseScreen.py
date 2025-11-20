@@ -3,8 +3,6 @@ from pygame.transform import scale
 
 from .class_Screen import win
 from ..ui.class_ButtonText import ButtonText
-from ..logic.class_Signals import signals
-from ..logic.class_CreateObjects import create_objects
 
 
 class PauseScreen:
@@ -16,7 +14,7 @@ class PauseScreen:
         return cls.__instance
 
     def __init__(self):
-        self.image = scale(load('images/screens/pause.jpg'), win.screen.get_size())
+        self.image = scale(load('images/screens/pause.jpg'), win.size)
         self.rect = self.image.get_rect()
 
         self.btn = ButtonText(

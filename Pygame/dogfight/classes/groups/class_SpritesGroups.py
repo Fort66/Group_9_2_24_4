@@ -8,6 +8,7 @@ class SpritesGroups:
         'player_group': GroupSingle(),
         'player_shots_group': Group(),
         'enemies_group': Group(),
+        'enemies_shots_group': Group(),
     }
 
     def __new__(cls, *args, **kwargs):

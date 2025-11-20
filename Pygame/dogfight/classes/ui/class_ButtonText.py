@@ -1,15 +1,14 @@
 import pygame as pg
 from pygame.locals import *
-from pygame.image import load
-from pygame.transform import scale, flip
+
 from pygame import MOUSEMOTION
 from pygame.mouse import get_pos, get_pressed
 from pygame import Surface
-from pygame.sprite import Sprite, Group
+from pygame.sprite import Sprite
 
-from sys import platform
 from icecream import ic
 
+from sys import platform
 
 pg.init()
 

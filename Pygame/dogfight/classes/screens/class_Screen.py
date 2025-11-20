@@ -12,6 +12,8 @@ class Screen:
 
     def __init__(self):
         self.screen = set_mode([1920, 768], flags=DOUBLEBUF)
+        self.rect = self.screen.get_rect()
+        self.size = self.screen.get_size()
         self.caption = set_caption('My Game')
 
 
