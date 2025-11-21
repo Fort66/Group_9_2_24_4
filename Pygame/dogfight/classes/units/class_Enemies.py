@@ -1,12 +1,15 @@
 from pygame.sprite import Sprite
 from pygame.image import load
 from pygame.transform import scale_by
+from pygame.math import Vector2
 
 from random import uniform, randint
+from time import time
 
 from ..screens.class_Screen import win
 from ..groups.class_AllSprites import all_sprites
 from ..groups.class_SpritesGroups import groups
+from .class_Shoots import Shoots
 
 
 class Enemies(Sprite):
@@ -15,7 +18,11 @@ class Enemies(Sprite):
         self.image = scale_by(load(path[0]).convert_alpha(), path[1])
         self.gen_pos()
         self.speed = randint(3, 5)
+        self.directX = -1
         self._layer = 2
+        self.permission_shot = 4
+        self.shot_time = 1
+        self.angle = 0
         groups.enemies_group.add(self)
         all_sprites.add(self)
 
@@ -31,6 +38,15 @@ class Enemies(Sprite):
         #     # if self in all_sprites:
         #         # all_sprites.remove(self)
 
+    def shoots(self):
+        if not self.shot_time:
+            self.shot_time = time()
+        if time() - self.shot_time >= self.permission_shot:
+            shoot = Shoots(pos=self.rect.center, speed=15, angle=self.angle, owner=self)
+            groups.enemies_shots_group.add(shoot)
+            all_sprites.add(shoot)
+            self.shot_time = time()
+
     def gen_pos(self):
         self.rect = self.image.get_rect(center=(
             uniform(
@@ -45,4 +61,5 @@ class Enemies(Sprite):
 
     def update(self):
         self.move()
+        self.shoots()
         win.screen.blit(self.image, self.rect)

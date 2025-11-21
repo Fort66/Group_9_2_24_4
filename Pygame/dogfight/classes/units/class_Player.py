@@ -11,7 +11,7 @@ from itertools import count
 from ..screens.class_Screen import win
 from ..groups.class_AllSprites import all_sprites
 from ..groups.class_SpritesGroups import groups
-from .class_PlayerShoots import PlayerShoots
+from .class_Shoots import Shoots
 from .class_Explosion import Explosion
 from ..logic.class_Weapons import Weapons
 
@@ -39,6 +39,7 @@ class Player(Sprite):
         self.angle = 0
         self.cobra_angle = 0
         self._layer = 2
+        self.directX = 1
         self.prepare_weapons()
         groups.player_group.add(self)
         all_sprites.add(self)
@@ -66,7 +67,7 @@ class Player(Sprite):
                     if not self.shot_time:
                         self.shot_time = time()
                     if time() - self.shot_time >= self.permission_shot:
-                        shoot = PlayerShoots(pos=pos, speed=15, angle=self.angle)
+                        shoot = Shoots(pos=pos, speed=15, angle=self.angle, owner=self)
                         groups.player_shots_group.add(shoot)
                         all_sprites.add(shoot)
                         self.shot_time = time()
@@ -133,10 +134,10 @@ class Player(Sprite):
             self.rect.bottom = win.screen.get_height()
 
     def collision(self):
-        rocket_collide = groupcollide(groups.player_shots_group, groups.enemies_group, True, True)
+        rocket_collide = groupcollide(groups.enemies_group, groups.player_shots_group,  True, True)
         if rocket_collide:
             hits = list(rocket_collide.keys())[0]
-            self.explosion_rocket = Explosion(hits.rect.center, 1)
+            self.explosion_rocket = Explosion(pos=hits.rect.center, types=1,scale_value=.5)
             self.explosion_rocket.speed = hits.speed * -1
 
     def update(self):

@@ -9,15 +9,15 @@ from ..screens.class_Screen import win
 
 
 class Explosion(Sprite):
-    def __init__(self, pos, types):
+    def __init__(self, pos, types, scale_value):
         Sprite.__init__(self)
         self.pos = pos
         self.types = types
         self._layer = 2
-        self.speed = None
+        self.speed = 0
 
         if types == 1:
-            self.image = scale_by(load('images/explosions/rocket_explosion.gif', loops=0), .5, new_gif=True)
+            self.image = scale_by(load('images/explosions/rocket_explosion.gif', loops=0), scale_value, new_gif=True)
             # self.image = scale_by(self.image, .5, new_gif=True)
 
         self.rect = self.image.get_rect(center=self.pos)

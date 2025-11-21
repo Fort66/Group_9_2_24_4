@@ -1,4 +1,4 @@
-from pygame.display import set_mode, set_caption
+from pygame.display import set_mode, set_caption, get_desktop_sizes
 from pygame.locals import DOUBLEBUF
 
 
@@ -11,10 +11,13 @@ class Screen:
         return cls.__instance
 
     def __init__(self):
-        self.screen = set_mode([1920, 768], flags=DOUBLEBUF)
-        self.rect = self.screen.get_rect()
-        self.size = self.screen.get_size()
+        # self.size = self.screen.get_size()
+        # self.size = get_desktop_sizes()[0]
+        self.size = ([1920, 1080])
+        
+        self.screen = set_mode(self.size, flags=DOUBLEBUF)
         self.caption = set_caption('My Game')
+        self.rect = self.screen.get_rect()
 
 
 win = Screen()
