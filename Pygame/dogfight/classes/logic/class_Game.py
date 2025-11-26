@@ -1,13 +1,11 @@
 import pygame as pg
-pg.init()
+# pg.init()
 
 from pygame.locals import QUIT, K_ESCAPE, KEYDOWN, K_F2
 
-from ..screens.class_Screen import win
-from ..groups.class_AllSprites import all_sprites
-from ..groups.class_SpritesGroups import groups
-from ..screens.class_StartScreen import start_screen
-from ..screens.class_PauseScreen import pause_screen
+from ..screens import win, start_screen, pause_screen
+from ..groups import all_sprites, groups
+
 from ..logic.class_Signals import signals
 
 
